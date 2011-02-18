@@ -1,6 +1,5 @@
 require './tridiagonal_matrix'
 
-require 'rubygems'; require 'ruby-debug'
 describe TridiagonalMatrix do
     it "should initialize with 2" do
         TridiagonalMatrix.new(2)
@@ -105,6 +104,23 @@ describe TridiagonalMatrix do
 
         diff = 0.00001
         correct_results = [-1.35211, 24.50704]
+
+        result.each_with_index do |x, i|
+            x.should be_close(correct_results[i], diff)
+        end
+    end
+    it "should determinate specific matrix with right value" do
+        m = TridiagonalMatrix.new([
+            [2, 0.5, 0, 0],
+            [0.5, 2, 0.5, 0],
+            [0, 0.5, 2, 0.5],
+            [0, 0, 0.5, 2]
+        ])
+
+        result = m.determinate([3, 6, 9, 9.5])
+
+        diff = 0.0000001
+        correct_results = [1, 2, 3, 4]
 
         result.each_with_index do |x, i|
             x.should be_close(correct_results[i], diff)
