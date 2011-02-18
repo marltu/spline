@@ -1,6 +1,6 @@
-require './matrix'
+require './generic_matrix'
 
-class TridiagonalMatrix < Matrix
+class TridiagonalMatrix < GenericMatrix
     @matrix
     def fill_zero(n)
         @matrix = []
