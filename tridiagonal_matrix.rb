@@ -65,10 +65,16 @@ class TridiagonalMatrix < Matrix
 
     private
     def tdma(d)
+        tdma_reset_cache
         (@matrix.length - 1).downto(0).collect { |k| tdma_x(k, d) }.reverse
+
     end
 
+    # memory / cpu time tradeoff
+    @tdma_cache
+
     def tdma_x(k, d)
+        @tdma_cache['x'][k] ||=
         if (k == (@matrix.length() -1))
             tdma_d(k, d)
         else
@@ -77,6 +83,7 @@ class TridiagonalMatrix < Matrix
     end
 
     def tdma_c(k)
+        @tdma_cache['c'][k] ||=
         if k == 0
             -get_c(k).fdiv(get_b(k))
         else
@@ -85,6 +92,7 @@ class TridiagonalMatrix < Matrix
     end
 
     def tdma_d(k, d)
+        @tdma_cache['d'][k] ||=
         if k == 0
             d[k].fdiv get_b(k)
         else
@@ -95,5 +103,9 @@ class TridiagonalMatrix < Matrix
 
     def tdma_cd_partial(k)
         get_a(k) * tdma_c(k-1) + get_b(k)
+    end
+
+    def tdma_reset_cache
+        @tdma_cache = {'x' => [], 'c' => [], 'd' => []}
     end
 end
