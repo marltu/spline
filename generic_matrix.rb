@@ -1,4 +1,4 @@
-class Matrix
+class GenericMatrix
     @matrix
     
     def initialize(n)
