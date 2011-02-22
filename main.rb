@@ -20,7 +20,8 @@ Gnuplot.open do |gp|
         points = PointGenerator.new(f).generate(100, range)
         skip_true = false
     else
-        points = PointGenerator.new(22).generate(6, 0..6)
+        range = 0..6
+        points = PointGenerator.new(22).generate(6, range)
         skip_real = true
     end
 
