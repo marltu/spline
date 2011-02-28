@@ -126,4 +126,71 @@ describe TridiagonalMatrix do
             x.should be_close(correct_results[i], diff)
         end
     end
+
+    it "should not determinate 4x4 (first line)" do
+        m = TridiagonalMatrix.new([
+            [2, 3, 0, 0],
+            [0.5, 2, 0.5, 0],
+            [0, 0.5, 2, 0.5],
+            [0, 0, 0.5, 2]
+        ])
+
+        lambda { m.determinate([3, 6, 9, 9.5]) }.should raise_error RuntimeError
+    end
+
+
+    it "should determinate 10x10" do
+        m = TridiagonalMatrix.new(10)
+
+        m.set_b(0, 2)
+        m.set_c(0, 1)
+        m.set_abc(1, 1, 2, 1)
+        m.set_abc(2, 1, 2, 1)
+        m.set_abc(3, 1, 2, 1)
+        m.set_abc(4, 1, 2, 1)
+        m.set_abc(5, 1, 2, 1)
+        m.set_abc(6, 1, 2, 1)
+        m.set_abc(7, 1, 2, 1)
+        m.set_abc(8, 1, 2, 1)
+        m.set_abc(9, 1, 2, 1)
+
+        m.set_a(9, 1)
+        m.set_b(9, 2)
+
+        result = m.determinate([4, 8, 12, 16, 20, 24, 28, 32, 36, 29])
+
+        diff = 0.0000001
+        correct_results = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        result.each_with_index do |x, i|
+            x.should be_close(correct_results[i], diff)
+        end
+
+
+    end
+
+    it "should fail domination test on 10x10" do
+        m = TridiagonalMatrix.new(10)
+
+        m.set_b(0, 2)
+        m.set_c(0, 2)
+        m.set_abc(1, 1, 2, 1)
+        m.set_abc(2, 1, 2, 1)
+        m.set_abc(3, 1, 2, 1)
+        m.set_abc(4, 1, 2, 1)
+        m.set_abc(5, 1, 2, 1)
+        m.set_abc(6, 1, 2, 1)
+        m.set_abc(7, 1, 2, 1)
+        m.set_abc(8, 1, 2, 1)
+        m.set_abc(9, 1, 2, 1)
+
+        # all are a+c = b
+
+        m.set_a(9, 2)
+        m.set_b(9, 2)
+
+        lambda { result = m.determinate([4, 8, 12, 16, 20, 24, 28, 32, 36, 29])}.should raise_error RuntimeError
+
+    end
+
 end

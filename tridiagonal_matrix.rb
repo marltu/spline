@@ -32,6 +32,12 @@ class TridiagonalMatrix < GenericMatrix
     def set_b(y, value)
         @matrix[y][1] = value
     end
+
+    def set_abc(y, a, b, c)
+        set_a(y, a)
+        set_b(y, b)
+        set_c(y, c)
+    end
     def get_b(y)
         @matrix[y][1]
     end
@@ -44,10 +50,20 @@ class TridiagonalMatrix < GenericMatrix
     end
 
     def diagonally_dominant?
+        strict = false
+
         @matrix.each_index do |y|
             if (get_b(y).abs < get_a(y).abs + get_c(y).abs) 
                 return false
             end
+
+            if (not strict and get_b(y).abs > get_a(y).abs + get_c(y).abs)
+                strict = true
+            end
+        end
+
+        if (not strict)
+            return false
         end
 
         return true
@@ -58,7 +74,7 @@ class TridiagonalMatrix < GenericMatrix
             raise ArgumentError, "invalid number of parameters given. Got #{d.length} but should be #{@matrix.length}"
         end
 
-        raise "Matrix is not diagonally dominant, can't solve" if not diagonally_dominant?
+        raise "Matrix is not diagonally dominant, can't solve (sufficient condition)" if not diagonally_dominant?
 
         return tdma(d)
     end
