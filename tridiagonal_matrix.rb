@@ -69,7 +69,7 @@ class TridiagonalMatrix < GenericMatrix
         return true
     end
 
-    def determinate(d)
+    def solve(d)
         if d.length != @matrix.length
             raise ArgumentError, "invalid number of parameters given. Got #{d.length} but should be #{@matrix.length}"
         end

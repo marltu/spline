@@ -47,7 +47,7 @@ class Spline
         matrix.set_b(last, 1)
         eq.push(0)
 
-        matrix.determinate(eq)
+        matrix.solve(eq)
     end
 
     def create_S
